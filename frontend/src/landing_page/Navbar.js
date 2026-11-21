@@ -48,6 +48,11 @@ function Navbar() {
                   Support
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link active" to="/login">
+                  Login
+                </Link>
+              </li>
                 
               
             </ul>

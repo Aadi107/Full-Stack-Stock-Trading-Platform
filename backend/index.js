@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const ratelimit = require("express-rate-limit");
 
 const { HoldingsModel } = require("./model/HoldingsModel");
 
@@ -15,10 +16,31 @@ const url = process.env.MONGO_URL;
 
 const app = express();
 
-app.use(cors());
+const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/AuthRoutes");
+
+const authMiddleware = require("./middleware/authMiddleware");
+
+app.use(cors({
+  origin:/^http:\/\/localhost:\d+$/,
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 
-app.get("/addHoldings", async (req, res) => {
+app.use(cookieParser());
+
+app.use("/api/auth", authRoutes);
+
+// Protected authorization route
+app.get("/api/auth/profile", authMiddleware, (req, res) => {
+  res.status(200).json({
+    message: "Protected route accessed successfully!",
+    user: req.user,
+  });
+});
+
+app.get("/addHoldings", authMiddleware , async (req, res) => {
   // let tempHoldings = [
   //   {
   //     name: "BHARTIARTL",
@@ -166,6 +188,9 @@ app.get("/addPositions", async (req, res) => {
   res.send("Done!");
 });
 
+
+// To fetch Data
+
 app.get("/allHoldings", async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
   res.json(allHoldings);
@@ -189,8 +214,22 @@ app.post("/newOrder", async (req, res) => {
   res.send("Order saved!");
 });
 
-app.listen(PORT, () => {
-  console.log("App started!");
-  mongoose.connect(url);
-  console.log("DB started!");
-});
+// Rate Limiter
+
+const limiter = ratelimit({
+    windowMS : 15 * 60 * 1000,
+    max : 100,
+    message : "Try Later!"
+})
+
+mongoose.connect(url)
+    .then(() => {
+        console.log("MongoDB connected successfully!");
+
+        app.listen(PORT, () => {
+            console.log(`App running on port ${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error("MongoDB connection failed:", err.message);
+    });

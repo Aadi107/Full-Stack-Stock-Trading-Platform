@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+
+import {Link} from "react-router-dom";
 
 import axios from "axios";
 
@@ -7,24 +8,42 @@ import GeneralContext from "./GeneralContext";
 
 import "./BuyActionWindow.css";
 
+const Api_url = process.env.REACT_APP_BACKEND_URL
+
 const BuyActionWindow = ({ uid }) => {
+  const {closeBuyWindow} = useContext(GeneralContext);
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
 
-  const handleBuyClick = () => {
-    axios.post("http://localhost:3002/newOrder", {
-      name: uid,
-      qty: stockQuantity,
-      price: stockPrice,
-      mode: "BUY",
-    });
+  const handleBuyClick = async () => {
+  try {
+    const response = await axios.post(
+      `${Api_url}/newOrder`,
+      {
+        name: uid,
+        qty: stockQuantity,
+        price: stockPrice,
+        mode: "BUY",
+      },
+      {
+        withCredentials: true,
+      }
+    );
 
-    GeneralContext.closeBuyWindow();
-  };
+    console.log("Order successful:", response.data);
+    closeBuyWindow();
+
+  } catch (error) {
+    console.error(
+      "Error placing order:",
+      error.response?.data || error.message
+    );
+  }
+};
 
   const handleCancelClick = () => {
-    GeneralContext.closeBuyWindow();
-  };
+  closeBuyWindow();
+};
 
   return (
     <div className="container" id="buy-window" draggable="true">
@@ -55,14 +74,23 @@ const BuyActionWindow = ({ uid }) => {
       </div>
 
       <div className="buttons">
-        <span>Margin required ₹140.65</span>
+        <span>Margin required is ₹125</span>
         <div>
-          <Link className="btn btn-blue" onClick={handleBuyClick}>
-            Buy
-          </Link>
-          <Link to="" className="btn btn-grey" onClick={handleCancelClick}>
-            Cancel
-          </Link>
+          <div>
+            <button
+              type="button"
+              className="btn btn-blue"
+              onClick={handleBuyClick}>
+              Buy
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-grey"
+              onClick={handleCancelClick}>
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
