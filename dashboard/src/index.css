@@ -843,4 +843,170 @@ hr {
 }
 
 
+/* Funds page demo transaction forms */
+
+.funds .btn {
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+  display: inline-block;
+}
+
+.fund-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.48);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.fund-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  box-sizing: border-box;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.fund-modal h2 {
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: #313131;
+  margin: 0 0 8px;
+}
+
+.fund-modal-description {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 22px;
+}
+
+.fund-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  color: #777;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.fund-modal-balance {
+  background: #f5f8ff;
+  border: 1px solid #e3ebff;
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fund-modal-balance span {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.fund-modal-balance strong {
+  color: #4184f3;
+  font-size: 1.35rem;
+}
+
+.fund-modal form label {
+  display: block;
+  color: #555;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.fund-modal form input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.fund-modal form input:focus {
+  border-color: #4184f3;
+  box-shadow: 0 0 0 2px rgba(65, 132, 243, 0.12);
+}
+
+.fund-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.fund-modal-actions button {
+  border: none;
+  border-radius: 4px;
+  padding: 11px 18px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.fund-cancel {
+  background: #eee;
+  color: #555;
+}
+
+.fund-submit {
+  color: #fff;
+}
+
+.fund-submit.add {
+  background: #4caf50;
+}
+
+.fund-submit.withdraw {
+  background: #4184f3;
+}
+
+.fund-message {
+  font-size: 0.82rem;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+.fund-message.success {
+  color: #218838;
+}
+
+.fund-message.error {
+  color: #d93025;
+}
+
+.fund-demo-note {
+  color: #999;
+  font-size: 0.72rem;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .fund-modal {
+    padding: 24px 20px;
+  }
+
+  .funds {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+
+
 
